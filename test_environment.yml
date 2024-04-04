@@ -6,7 +6,7 @@ channels:
   - schmidt73
 dependencies:
   - conda-libmamba-solver
-  - bzip2==1.0.8
+  - bzip2
   - startle
   - numpy
   - scipy
@@ -18,8 +18,6 @@ dependencies:
   - tqdm
   - statsmodels
   - networkx
-  - matplotlib
-  - seaborn
   - pysam
   - ete3
   
