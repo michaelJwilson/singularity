@@ -1,0 +1,25 @@
+name: minimal_calicost
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+  - schmidt73
+dependencies:
+  - conda-libmamba-solver
+  - bzip2==1.0.8
+  - startle
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - scanpy
+  - anndata
+  - numba
+  - tqdm
+  - statsmodels
+  - networkx
+  - matplotlib
+  - seaborn
+  - pysam
+  - ete3
+  
