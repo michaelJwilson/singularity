@@ -3,6 +3,8 @@
 # NB images cached to $HOME/.apptainer/cache
 # 
 Bootstrap: docker
+
+# NB https://hub.docker.com/r/continuumio/miniconda3
 From: continuumio/miniconda3
 Stage: build
 
@@ -18,6 +20,7 @@ Stage: build
 %post
     apt-get update
 
+    # NB https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
     conda config --set solver libmamba
 
     # NB create this early to benefit from layer caching.
