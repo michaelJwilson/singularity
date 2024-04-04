@@ -1,0 +1,66 @@
+# apptainer build (-F) --build-arg-file ./my_args_file.txt ./my_container.sif ./my_container.def
+#
+# NB images cached to $HOME/.apptainer/cache
+# 
+Bootstrap: docker
+From: ubuntu:{{ VERSION }}
+Stage: devel
+
+%arguments
+    VERSION=22.04
+
+%files
+    /file1
+    /file1 /opt
+
+%environment
+    export LISTEN_PORT=54321
+    export LC_ALL=C
+
+%post
+    apt-get update && apt-get install -y netcat samtools
+    NOW=`date`
+    echo "export NOW=\"${NOW}\"" >> $APPTAINER_ENVIRONMENT
+
+%runscript
+    #!/bin/bash
+
+    # NB when the container is invoked, arguments following the container name are passed to the runscript.
+    echo "Arguments received: $*"
+    exec echo "$@"
+
+%startscript
+    echo {{ WELCOME_MESSAGE }}
+
+%test
+    grep -q NAME=\"Ubuntu\" /etc/os-release
+    if [ $? -eq 0 ]; then
+        echo "Container base is Ubuntu as expected."
+    else
+        echo "Container base is not Ubuntu."
+        exit 1
+    fi
+
+    echo 'Looking for samtools...'
+    ( samtools --version | grep -q 'samtools 1' ) && echo 'Success!'
+
+%labels
+    Author Michael J. Wilson
+    Version v0.0.1
+
+%help
+    This is a demo container used to illustrate a def file that uses all
+    supported sections.
+
+
+# NB install binary into the final image
+Bootstrap: library
+From: alpine:3.9
+Stage: final
+
+# NB install binary from stage one
+%files from devel
+  /root/hello /bin/hello
+
+%runscript
+  /bin/hello
